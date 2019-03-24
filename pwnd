@@ -1,0 +1,13 @@
+#!/usr/bin/sh
+
+function sha1() {
+    echo -n "$1" | sha1sum | cut -d ' ' -f 1
+}
+
+if [ -z "$1" ]; then
+    echo "$0 <PASSWORD>"
+    exit 1
+fi
+
+hash=$(sha1 "$1")
+curl -s "https://api.pwnedpasswords.com/range/${hash::5}" | grep -i "${hash:5}"
